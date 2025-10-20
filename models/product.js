@@ -27,3 +27,8 @@ const productSchema = new mongoose.Schema({
         default : ["/default-product.jpg"]
     }
 })
+
+
+const Product = mongoose.model("products",productSchema)
+
+export default Product;

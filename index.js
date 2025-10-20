@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
+import productRouter from "./routers/productRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
@@ -55,6 +56,7 @@ mongoose.connect(connectionString).then(
 
 
 app.use("/api/user",userRouter)
+app.use("/api/products",productRouter)
 
 
 

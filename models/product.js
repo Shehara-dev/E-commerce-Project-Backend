@@ -25,6 +25,24 @@ const productSchema = new mongoose.Schema({
     image : {
         type : [String],
         default : ["/default-product.jpg"]
+    },
+    description : {
+        type : String,
+        required : true
+    },
+    stock : {
+        type : Number,
+        required : true,
+        default : 0
+    },
+    isAvailable : {
+        type : Boolean,
+        default : true
+    },
+    category : {
+        type : String,
+        required : true,
+        default : "cosmatics"
     }
 })
 

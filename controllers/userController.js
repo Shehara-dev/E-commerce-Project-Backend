@@ -1,11 +1,16 @@
 import User from "../models/user.js";
+import bcrypt from "bcrypt";
 
+
+//User register
 export function createUser(req, res){
+
+    const passwordHash = bcrypt.hashSync(req.body.password, 10)
 
     const userData = {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: passwordHash,
         role: req.body.role
     }
     
@@ -25,4 +30,32 @@ export function createUser(req, res){
             })
         }
     )
+}
+
+
+
+
+// Check if user is Admin
+export function isAdmin(req) {
+    if (req.user == null) {
+        return false;
+    }
+    if (req.user.role == "Admin") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+// Check if user is Customer
+export function isCustomer(req) {
+    if (req.user == null) {
+        return false;
+    }
+    if (req.user.role == "Customer") {
+        return true;
+    } else {
+        return false;
+    }
 }

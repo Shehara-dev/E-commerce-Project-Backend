@@ -2,13 +2,45 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 const app = express()
 
 app.use(bodyParser.json());
 
-const connectionString = "mongodb+srv://admin:123@cluster0.vukhw1c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+
+// authentication middleware
+app.use((req, res, next) => {
+  const value = req.header("Authorization");
+
+  if (value != null) {
+    const token = value.replace("Bearer ", "");
+
+    jwt.verify(token, process.env.JWT_SECRET , (err, decoded) => {
+      if (err) {
+        // invalid token
+        return res.status(401).json({
+          message: "Unauthorized User",
+        });
+      } else {
+        // valid token
+        req.user = decoded;
+        next();
+      }
+    });
+  } else {
+    // no token provided
+    next();
+  }
+});
+
+
+
+const connectionString = process.env.MONGO_URI
 
 mongoose.connect(connectionString).then(
     () => {

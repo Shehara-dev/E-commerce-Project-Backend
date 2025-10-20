@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import userRouter from "./routers/userRouter.js";
 
 
 const app = express()
@@ -17,6 +18,12 @@ mongoose.connect(connectionString).then(
     () => {
         console.log("Connection Failed")
     })
+
+
+
+
+app.use("/api/user",userRouter)
+
 
 
 

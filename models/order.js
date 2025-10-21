@@ -64,6 +64,29 @@ const orderSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
+    // ===== NEW PAYHERE FIELDS =====
+    paymentMethod: {
+        type: String,
+        enum: ['payhere', 'cash_on_delivery'],
+        default: 'payhere'
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['pending', 'completed', 'failed', 'cancelled'],
+        default: 'pending'
+    },
+    payherePaymentId: {
+        type: String,
+        default: null
+    },
+    payhereStatusCode: {
+        type: String,
+        default: null
+    },
+    paymentDate: {
+        type: Date,
+        default: null
+    }
 })
 
 const Order = mongoose.model("Order", orderSchema);

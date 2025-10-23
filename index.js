@@ -6,10 +6,17 @@ import productRouter from "./routers/productRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import orderRouter from "./routers/orderRouter.js";
+import cors from 'cors';
+
 dotenv.config();
 
 
 const app = express()
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 app.use(bodyParser.json());
 

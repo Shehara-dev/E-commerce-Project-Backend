@@ -64,7 +64,7 @@ const orderSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    // ===== NEW PAYHERE FIELDS =====
+    
     paymentMethod: {
         type: String,
         enum: ['payhere', 'cash_on_delivery'],

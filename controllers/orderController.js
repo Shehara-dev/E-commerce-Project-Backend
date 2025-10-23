@@ -44,7 +44,7 @@ export async function createOrder(req, res) {
 					return;
 				}
 
-				// Check stock availability
+				
 				if (product.stock < item.qty) {
 					res.status(400).json({
 						message: `Insufficient stock for ${product.name}. Available: ${product.stock}`,
@@ -111,8 +111,8 @@ export async function createOrder(req, res) {
 				order: result,
 				payhereData: {
 					merchant_id: merchantId,
-					return_url: process.env.PAYHERE_RETURN_URL || "http://localhost:3000/payment-success",
-					cancel_url: process.env.PAYHERE_CANCEL_URL || "http://localhost:3000/payment-cancel",
+					return_url: process.env.PAYHERE_RETURN_URL || "http://localhost:5173/payment-success",
+					cancel_url: process.env.PAYHERE_CANCEL_URL || "http://localhost:5173/payment-cancel",
 					notify_url: process.env.PAYHERE_NOTIFY_URL || "http://localhost:5000/api/orders/payhere-notify",
 					order_id: orderId,
 					items: items[0].name + (items.length > 1 ? ` +${items.length - 1} more` : ""),
@@ -182,7 +182,7 @@ export async function payhereNotify(req, res) {
 			return;
 		}
 
-		// Find order
+		
 		const order = await Order.findOne({ orderID: order_id });
 
 		if (!order) {
@@ -196,7 +196,7 @@ export async function payhereNotify(req, res) {
 		order.payhereStatusCode = status_code;
 
 		if (status_code === "2") {
-			// Success
+			
 			order.paymentStatus = "completed";
 			order.status = "confirmed";
 			order.paymentDate = new Date();
@@ -211,20 +211,20 @@ export async function payhereNotify(req, res) {
 
 			console.log("Payment successful for order:", order_id);
 		} else if (status_code === "0") {
-			// Pending
+			
 			order.paymentStatus = "pending";
 			console.log("Payment pending for order:", order_id);
 		} else if (status_code === "-1") {
-			// Cancelled
+			
 			order.paymentStatus = "cancelled";
 			order.status = "cancelled";
 			console.log("Payment cancelled for order:", order_id);
 		} else if (status_code === "-2") {
-			// Failed
+		
 			order.paymentStatus = "failed";
 			console.log("Payment failed for order:", order_id);
 		} else if (status_code === "-3") {
-			// Chargedback
+			
 			order.paymentStatus = "failed";
 			order.status = "cancelled";
 			console.log("Payment chargedback for order:", order_id);

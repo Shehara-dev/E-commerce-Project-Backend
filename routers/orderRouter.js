@@ -5,15 +5,8 @@ import { createOrder, getOrders, payhereNotify, updateOrder } from '../controlle
 const orderRouter = express.Router();
 
 orderRouter.post("/", createOrder);
-
-// Get orders with pagination
-orderRouter.get("/:page/:limit",getOrders);
-
-
-// PayHere IPN (Instant Payment Notification) endpoint
-orderRouter.post("/payhere-notify",payhereNotify);
-
-
+orderRouter.get("/:page/:limit",getOrders); // Get orders with pagination
+orderRouter.post("/payhere-notify",payhereNotify); // PayHere IPN (Instant Payment Notification) endpoint
 orderRouter.put("/:orderId",updateOrder)
 
 

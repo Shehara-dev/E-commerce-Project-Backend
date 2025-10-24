@@ -252,7 +252,6 @@ export async function getOrders(req, res) {
 		res.status(401).json({ message: "Please login to view orders" });
 		return;
 	}
-
 	try {
 		if (req.user.role == "Admin") {
 			const orderCount = await Order.countDocuments();

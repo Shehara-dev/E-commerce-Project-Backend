@@ -7,16 +7,13 @@ import jwt from "jsonwebtoken";
 export function createUser(req, res) {
 
     const passwordHash = bcrypt.hashSync(req.body.password, 10)
-
     const userData = {
         name: req.body.name,
         email: req.body.email,
         password: passwordHash,
         role: req.body.role || 'Customer'
     }
-
     const user = new User(userData)
-
     user.save().then(
         () => {
             res.json({

@@ -20,9 +20,7 @@ export async function createOrder(req, res) {
 			const lastOrderIdWithoutPrefix = lastOrderIdInString.replace("CBC", "");
 			const lastOrderIdInInteger = parseInt(lastOrderIdWithoutPrefix);
 			const newOrderIdInInteger = lastOrderIdInInteger + 1;
-			const newOrderIdWithoutPrefix = newOrderIdInInteger
-				.toString()
-				.padStart(5, "0");
+			const newOrderIdWithoutPrefix = newOrderIdInInteger.toString().padStart(5, "0");
 			orderId = "CBC" + newOrderIdWithoutPrefix;
 		}
 
@@ -90,21 +88,8 @@ export async function createOrder(req, res) {
 			const amount = total.toFixed(2);
 			const currency = "LKR";
 
-			const hash = crypto
-				.createHash("md5")
-				.update(
-					merchantId +
-						orderId +
-						amount +
-						currency +
-						crypto
-							.createHash("md5")
-							.update(merchantSecret)
-							.digest("hex")
-							.toUpperCase()
-				)
-				.digest("hex")
-				.toUpperCase();
+			const hash = crypto.createHash("md5").update(merchantId +orderId +amount +currency +
+				crypto.createHash("md5").update(merchantSecret).digest("hex").toUpperCase()).digest("hex").toUpperCase();
 
 			res.json({
 				message: "Order created successfully",
@@ -201,7 +186,7 @@ export async function payhereNotify(req, res) {
 			order.status = "confirmed";
 			order.paymentDate = new Date();
 
-			// Reduce stock for each item
+			
 			for (let item of order.items) {
 				await Product.updateOne(
 					{ productId: item.productId },

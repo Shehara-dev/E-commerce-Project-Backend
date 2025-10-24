@@ -241,10 +241,7 @@ export async function getOrders(req, res) {
 		if (req.user.role == "Admin") {
 			const orderCount = await Order.countDocuments();
 			const totalPages = Math.ceil(orderCount / limit);
-			const orders = await Order.find()
-				.skip((page - 1) * limit)
-				.limit(limit)
-				.sort({ date: -1 });
+			const orders = await Order.find().skip((page - 1) * limit).limit(limit).sort({ date: -1 });
 
 			res.json({
 				orders: orders,

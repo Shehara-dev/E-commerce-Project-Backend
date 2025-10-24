@@ -6,12 +6,9 @@ export async function createProduct(req, res) {
 	if (!isAdmin(req)) {
 		return res.status(403).json({ message: "Access denied. Admins only." });
 	}
-
 	const product = new Product(req.body);
-
 	try {
 		const response = await product.save();
-
 		res.json({
 			message: "Product created successfully",
 			product: response,
@@ -44,14 +41,12 @@ export async function deleteProduct(req, res) {
 		res.status(403).json({ message: "Access denied. Admins only." });
 		return;
 	}
-
 	try {
 		const productId = req.params.productId;
 
 		await Product.deleteOne({
 			productId: productId,
 		});
-
 		res.json({ message: "Product deleted successfully" });
 	} catch (error) {
 		console.error("Error deleting product:", error);
@@ -66,7 +61,6 @@ export async function updateProduct(req, res) {
 		res.status(403).json({ message: "Access denied. Admins only." });
 		return;
 	}
-
 	const data = req.body;
 	const productId = req.params.productId;
 	//to prevent overwriting the productId in the request body
@@ -97,7 +91,6 @@ export async function getProductInfo(req, res) {
             res.status(404).json({ message: "Product not found" });
             return;
         }
-
 		if (isAdmin(req)) {
 
             res.json(product);
@@ -112,7 +105,6 @@ export async function getProductInfo(req, res) {
             }
 		}
 	} catch (error) {
-		
 		console.error("Error fetching product info:", error);
 		res.status(500).json({ message: "Failed to fetch product info" });
 
@@ -123,7 +115,6 @@ export async function getProductInfo(req, res) {
 
 export async function searchProducts(req,res){
 	const query = req.params.query
-
 	try{
 		const products = await Product.find({
 			$or: [
@@ -136,6 +127,5 @@ export async function searchProducts(req,res){
 	}catch{
 		res.status(500).json({ message: "Failed to search products" });
 	}
-	
 }
 
